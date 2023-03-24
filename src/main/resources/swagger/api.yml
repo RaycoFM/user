@@ -1,0 +1,187 @@
+openapi: "3.0.2"
+info:
+  title: Users API
+  description: Users Manager Application
+  contact:
+    name: Rayco
+    email: rayco@gmail.com
+  version: 1.0.0
+servers:
+- url: http://localhost:8091
+  description: Users API
+tags:
+  - name: User
+paths:
+  /user/{id}:
+    get:
+      tags:
+      - User
+      description: Get User By ID.
+      operationId: userById
+      parameters:
+      - name: id
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          example: 123
+      responses:
+        "200":
+          description: Ok! - User By ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+    delete:
+      tags:
+      - User
+      description: Delete User By ID.
+      operationId: deleteUser
+      parameters:
+      - name: id
+        in: path
+        description: User ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          example: 123
+      responses:
+        "200":
+          description: response
+
+  /user:
+    get:
+      tags:
+      - User
+      description: Get all users
+      operationId: users
+      responses:
+        "200":
+          description: Ok! - Get Users List.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+    put:
+      tags:
+      - User
+      description: Update User by ID.
+      operationId: updateUser
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: number
+          description: The user ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInDTO'
+      responses:
+        "200":
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+    post:
+      tags:
+      - User
+      description: Insert user in the Data Base.
+      operationId: saveUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInDTO'
+      responses:
+        "200":
+          description: Ok! - Users save.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+    patch:
+      tags:
+      - User
+      description: Modify patch user in the Data Base by ID.
+      operationId: patchUser
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: number
+          description: The user ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchUserDTO'
+      responses:
+        "200":
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+components:
+  schemas:
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        email:
+          type: string
+          example: rayco@gmail.com
+        name:
+          minLength: 3
+          type: string
+          example: Rayco
+        priority:
+          type: integer
+          example: 2
+      description: Users Data
+    PatchUserDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          example: rayco@gmail.com
+        name:
+          minLength: 3
+          type: string
+          example: Rayco
+        priority:
+          type: integer
+          example: 2
+      description: Patch Users Data
+    UserInDTO:
+      required:
+        - name
+        - email
+        - priority
+      type: object
+      properties:
+        email:
+          type: string
+          example: rayco@gmail.com
+        name:
+          minLength: 3
+          type: string
+          example: Rayco
+        priority:
+          type: integer
+          example: 2
+      description: Users Data
+
+
